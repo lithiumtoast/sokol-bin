@@ -1,7 +1,0 @@
----
-platform: linux 
-generator: Unix Makefiles
-build_tool: make
-build_type: Debug
-defines:
-  DUMMY_BACKEND: ON
