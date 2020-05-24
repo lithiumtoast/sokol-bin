@@ -21,16 +21,6 @@ jobs:
         submodules: true
         path: 'workspace/sokol_app-bin'
 
-    - name: 'win-x64-dummy-debug'
-      run: |
-        cd workspace/sokol_app-bin
-        python fips build win-x64-dummy-debug
-        
-    - name: 'win-x64-dummy-release'
-      run: |
-        cd workspace/sokol_app-bin
-        python fips build win-x64-dummy-release
-
     - name: 'win-x64-opengl-debug'
       run: |
         cd workspace/sokol_app-bin
@@ -53,12 +43,6 @@ jobs:
 
     - name: 'Organize artifacts'
       run: |
-
-        md win-x64/dummy/debug
-        move workspace/fips-deploy/sokol_app-bin/win-x64-dummy-debug/* win-x64/dummy/debug
-
-        md win-x64/dummy/release
-        move workspace/fips-deploy/sokol_app-bin/win-x64-dummy-release/* win-x64/dummy/release
 
         md win-x64/opengl/debug
         move workspace/fips-deploy/sokol_app-bin/win-x64-opengl-debug/* win-x64/opengl/debug
@@ -88,16 +72,6 @@ jobs:
       with:
         submodules: true
         path: 'workspace/sokol_app-bin'
-
-    - name: 'osx-x64-dummy-debug'
-      run: |
-        cd workspace/sokol_app-bin
-        python fips build osx-x64-dummy-debug
-        
-    - name: 'osx-x64-dummy-release'
-      run: |
-        cd workspace/sokol_app-bin
-        python fips build osx-x64-dummy-release
         
     - name: 'osx-x64-opengl-debug'
       run: |
@@ -121,12 +95,6 @@ jobs:
 
     - name: 'Organize artifacts'
       run: |
-
-        mkdir -p osx-x64/dummy/debug
-        mv workspace/fips-deploy/sokol_app-bin/osx-x64-dummy-debug/* osx-x64/dummy/debug
-
-        mkdir -p osx-x64/dummy/release
-        mv workspace/fips-deploy/sokol_app-bin/osx-x64-dummy-release/* osx-x64/dummy/release
 
         mkdir -p osx-x64/opengl/debug
         mv workspace/fips-deploy/sokol_app-bin/osx-x64-opengl-debug/* osx-x64/opengl/debug
@@ -159,16 +127,6 @@ jobs:
 
     - name: 'Install missing OpenGL dependencies'
       run: sudo apt-get install libglu1-mesa-dev
-        
-    - name: 'linux-x64-dummy-debug'
-      run: |
-        cd workspace/sokol_app-bin
-        python fips build linux-x64-dummy-debug
-
-    - name: 'linux-x64-dummy-release'
-      run: |
-        cd workspace/sokol_app-bin
-        python fips build linux-x64-dummy-release
 
     - name: 'linux-x64-opengl-debug'
       run: |
@@ -182,12 +140,6 @@ jobs:
 
     - name: 'Organize artifacts'
       run: |
-
-        mkdir -p linux-x64/dummy/debug
-        mv workspace/fips-deploy/sokol_app-bin/linux-x64-dummy-debug/* linux-x64/dummy/debug
-
-        mkdir -p linux-x64/dummy/release
-        mv workspace/fips-deploy/sokol_app-bin/linux-x64-dummy-release/* linux-x64/dummy/release
 
         mkdir -p linux-x64/opengl/debug
         mv workspace/fips-deploy/sokol_app-bin/linux-x64-opengl-debug/* linux-x64/opengl/debug
