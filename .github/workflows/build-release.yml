@@ -1,0 +1,287 @@
+name: 'Build & Release'
+
+on:
+  push:
+    branches:
+      - master
+  repository_dispatch:
+    types:
+      - build_release
+
+jobs:
+
+  build-windows-job:
+    name: 'Build: Windows'
+    runs-on: windows-latest
+    steps:
+
+    - name: 'Checkout repository'
+      uses: actions/checkout@master
+      with:  
+        submodules: true
+        path: 'workspace/sokol_app-bin'
+
+    - name: 'win-x64-dummy-debug'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build win-x64-dummy-debug
+        
+    - name: 'win-x64-dummy-release'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build win-x64-dummy-release
+
+    - name: 'win-x64-opengl-debug'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build win-x64-opengl-debug
+        
+    - name: 'win-x64-opengl-release'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build win-x64-opengl-release
+        
+    - name: 'win-x64-d3d11-debug'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build win-x64-d3d11-debug
+
+    - name: 'win-x64-d3d11-release'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build win-x64-d3d11-release
+
+    - name: 'Organize artifacts'
+      run: |
+
+        md win-x64/dummy/debug
+        move workspace/fips-deploy/sokol_app-bin/win-x64-dummy-debug/* win-x64/dummy/debug
+
+        md win-x64/dummy/release
+        move workspace/fips-deploy/sokol_app-bin/win-x64-dummy-release/* win-x64/dummy/release
+
+        md win-x64/opengl/debug
+        move workspace/fips-deploy/sokol_app-bin/win-x64-opengl-debug/* win-x64/opengl/debug
+
+        md win-x64/opengl/release
+        move workspace/fips-deploy/sokol_app-bin/win-x64-opengl-release/* win-x64/opengl/release
+
+        md win-x64/d3d11/debug
+        move workspace/fips-deploy/sokol_app-bin/win-x64-d3d11-debug/* win-x64/d3d11/debug
+
+        md win-x64/d3d11/release
+        move workspace/fips-deploy/sokol_app-bin/win-x64-d3d11-release/* win-x64/d3d11/release
+
+    - name: 'Upload Artifacts'
+      uses: actions/upload-artifact@v2-preview
+      with:
+        name: win-x64
+        path: win-x64
+        
+  build-osx-job:
+    name: 'Build: macOS'
+    runs-on: macos-latest
+    steps:
+    
+    - name: 'Checkout repository'
+      uses: actions/checkout@master
+      with:
+        submodules: true
+        path: 'workspace/sokol_app-bin'
+
+    - name: 'osx-x64-dummy-debug'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build osx-x64-dummy-debug
+        
+    - name: 'osx-x64-dummy-release'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build osx-x64-dummy-release
+        
+    - name: 'osx-x64-opengl-debug'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build osx-x64-opengl-debug
+
+    - name: 'osx-x64-opengl-release'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build osx-x64-opengl-release
+        
+    - name: 'osx-x64-metal-debug'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build osx-x64-metal-debug
+
+    - name: 'osx-x64-metal-release'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build osx-x64-metal-release
+
+    - name: 'Organize artifacts'
+      run: |
+
+        mkdir -p osx-x64/dummy/debug
+        mv workspace/fips-deploy/sokol_app-bin/osx-x64-dummy-debug/* osx-x64/dummy/debug
+
+        mkdir -p osx-x64/dummy/release
+        mv workspace/fips-deploy/sokol_app-bin/osx-x64-dummy-release/* osx-x64/dummy/release
+
+        mkdir -p osx-x64/opengl/debug
+        mv workspace/fips-deploy/sokol_app-bin/osx-x64-opengl-debug/* osx-x64/opengl/debug
+
+        mkdir -p osx-x64/opengl/release
+        mv workspace/fips-deploy/sokol_app-bin/osx-x64-opengl-release/* osx-x64/opengl/release
+
+        mkdir -p osx-x64/metal/debug
+        mv workspace/fips-deploy/sokol_app-bin/osx-x64-metal-debug/* osx-x64/metal/debug
+
+        mkdir -p osx-x64/metal/release
+        mv workspace/fips-deploy/sokol_app-bin/osx-x64-metal-release/* osx-x64/metal/release
+
+    - name: 'Upload Artifacts'
+      uses: actions/upload-artifact@v2-preview
+      with:
+        name: osx-x64
+        path: osx-x64
+        
+  build-linux-job:
+    name: 'Build: Linux'
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: 'Checkout repository'
+      uses: actions/checkout@master
+      with:
+        submodules: true
+        path: 'workspace/sokol_app-bin'
+
+    - name: 'Install missing OpenGL dependencies'
+      run: sudo apt-get install libglu1-mesa-dev
+        
+    - name: 'linux-x64-dummy-debug'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build linux-x64-dummy-debug
+
+    - name: 'linux-x64-dummy-release'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build linux-x64-dummy-release
+
+    - name: 'linux-x64-opengl-debug'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build linux-x64-opengl-debug
+        
+    - name: 'linux-x64-opengl-release'
+      run: |
+        cd workspace/sokol_app-bin
+        python fips build linux-x64-opengl-release
+
+    - name: 'Organize artifacts'
+      run: |
+
+        mkdir -p linux-x64/dummy/debug
+        mv workspace/fips-deploy/sokol_app-bin/linux-x64-dummy-debug/* linux-x64/dummy/debug
+
+        mkdir -p linux-x64/dummy/release
+        mv workspace/fips-deploy/sokol_app-bin/linux-x64-dummy-release/* linux-x64/dummy/release
+
+        mkdir -p linux-x64/opengl/debug
+        mv workspace/fips-deploy/sokol_app-bin/linux-x64-opengl-debug/* linux-x64/opengl/debug
+
+        mkdir -p linux-x64/opengl/release
+        mv workspace/fips-deploy/sokol_app-bin/linux-x64-opengl-release/* linux-x64/opengl/release
+
+    - name: 'Upload artifacts'
+      uses: actions/upload-artifact@v2-preview
+      with:
+        name: linux-x64
+        path: linux-x64
+
+  release-job:
+    name: 'Release'
+    needs: [build-windows-job, build-osx-job, build-linux-job]
+    runs-on: ubuntu-latest
+    steps:
+
+    # We assume that the current date YYYY-MM-DD is good enough for a release tag
+    #   -> assumed that two or more releases can't happen on the same day
+    - name: 'Get current date'
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: 'Download build artifacts: Windows'
+      uses: actions/download-artifact@v1
+      with:
+        name: win-x64
+
+    - name: 'Download build artifacts: macOS'
+      uses: actions/download-artifact@v1
+      with:
+        name: osx-x64
+
+    - name: 'Download build artifacts: Linux'
+      uses: actions/download-artifact@v1
+      with:
+        name: linux-x64
+
+    - name: 'Zip build artifacts'
+      run: |
+        zip -r win-x64.zip './win-x64'
+        zip -r osx-x64.zip './osx-x64'
+        zip -r linux-x64.zip './linux-x64'
+
+    - name: 'Create release'
+      id: create_release
+      uses: actions/create-release@latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        body:
+        tag_name: '${{ steps.date.outputs.date }}'
+        release_name: '${{ steps.date.outputs.date }}'
+        draft: false
+        prerelease: false
+
+    - name: 'Upload release artifacts: Windows'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: win-x64.zip
+        asset_name: win-x64.zip
+        asset_content_type: application/zip
+
+    - name: 'Upload release artifacts: macOS'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: osx-x64.zip
+        asset_name: osx-x64.zip
+        asset_content_type: application/zip
+
+    - name: 'Upload release artifacts: Linux'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: linux-x64.zip
+        asset_name: linux-x64.zip
+        asset_content_type: application/zip
+
+  dispatch-workflow-job:
+    name: 'Trigger external workflows'
+    needs: [release-job]
+    runs-on: ubuntu-latest
+    steps: 
+
+    - name: 'Trigger Sokol.NET workflow'
+      run: |
+        curl -XPOST -u "${{ secrets.SOKOL_NET_USERNAME  }}:${{  secrets.SOKOL_NET_REPO_ACCESS_TOKEN  }}" -H "Accept: application/vnd.github.everest-preview+json"  -H "Content-Type: application/json" https://api.github.com/repos/lithiumtoast/sokol.net/dispatches --data '{"event_type": "sokol_app-bin"}'
