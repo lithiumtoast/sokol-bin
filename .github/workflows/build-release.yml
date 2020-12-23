@@ -19,42 +19,42 @@ jobs:
       uses: actions/checkout@master
       with:  
         submodules: true
-        path: 'workspace/sokol_app-bin'
+        path: 'workspace/sokol-bin'
 
     - name: 'win-x64-opengl-debug'
       run: |
-        cd workspace/sokol_app-bin
+        cd workspace/sokol-bin
         python fips build win-x64-opengl-debug
         
     - name: 'win-x64-opengl-release'
       run: |
-        cd workspace/sokol_app-bin
+        cd workspace/sokol-bin
         python fips build win-x64-opengl-release
         
     - name: 'win-x64-d3d11-debug'
       run: |
-        cd workspace/sokol_app-bin
+        cd workspace/sokol-bin
         python fips build win-x64-d3d11-debug
 
     - name: 'win-x64-d3d11-release'
       run: |
-        cd workspace/sokol_app-bin
+        cd workspace/sokol-bin
         python fips build win-x64-d3d11-release
 
     - name: 'Organize artifacts'
       run: |
 
         md win-x64/opengl/debug
-        move workspace/fips-deploy/sokol_app-bin/win-x64-opengl-debug/* win-x64/opengl/debug
+        move workspace/fips-deploy/sokol-bin/win-x64-opengl-debug/* win-x64/opengl/debug
 
         md win-x64/opengl/release
-        move workspace/fips-deploy/sokol_app-bin/win-x64-opengl-release/* win-x64/opengl/release
+        move workspace/fips-deploy/sokol-bin/win-x64-opengl-release/* win-x64/opengl/release
 
         md win-x64/d3d11/debug
-        move workspace/fips-deploy/sokol_app-bin/win-x64-d3d11-debug/* win-x64/d3d11/debug
+        move workspace/fips-deploy/sokol-bin/win-x64-d3d11-debug/* win-x64/d3d11/debug
 
         md win-x64/d3d11/release
-        move workspace/fips-deploy/sokol_app-bin/win-x64-d3d11-release/* win-x64/d3d11/release
+        move workspace/fips-deploy/sokol-bin/win-x64-d3d11-release/* win-x64/d3d11/release
 
     - name: 'Upload Artifacts'
       uses: actions/upload-artifact@v2-preview
@@ -71,42 +71,42 @@ jobs:
       uses: actions/checkout@master
       with:
         submodules: true
-        path: 'workspace/sokol_app-bin'
+        path: 'workspace/sokol-bin'
         
     - name: 'osx-x64-opengl-debug'
       run: |
-        cd workspace/sokol_app-bin
+        cd workspace/sokol-bin
         python fips build osx-x64-opengl-debug
 
     - name: 'osx-x64-opengl-release'
       run: |
-        cd workspace/sokol_app-bin
+        cd workspace/sokol-bin
         python fips build osx-x64-opengl-release
         
     - name: 'osx-x64-metal-debug'
       run: |
-        cd workspace/sokol_app-bin
+        cd workspace/sokol-bin
         python fips build osx-x64-metal-debug
 
     - name: 'osx-x64-metal-release'
       run: |
-        cd workspace/sokol_app-bin
+        cd workspace/sokol-bin
         python fips build osx-x64-metal-release
 
     - name: 'Organize artifacts'
       run: |
 
         mkdir -p osx-x64/opengl/debug
-        mv workspace/fips-deploy/sokol_app-bin/osx-x64-opengl-debug/* osx-x64/opengl/debug
+        mv workspace/fips-deploy/sokol-bin/osx-x64-opengl-debug/* osx-x64/opengl/debug
 
         mkdir -p osx-x64/opengl/release
-        mv workspace/fips-deploy/sokol_app-bin/osx-x64-opengl-release/* osx-x64/opengl/release
+        mv workspace/fips-deploy/sokol-bin/osx-x64-opengl-release/* osx-x64/opengl/release
 
         mkdir -p osx-x64/metal/debug
-        mv workspace/fips-deploy/sokol_app-bin/osx-x64-metal-debug/* osx-x64/metal/debug
+        mv workspace/fips-deploy/sokol-bin/osx-x64-metal-debug/* osx-x64/metal/debug
 
         mkdir -p osx-x64/metal/release
-        mv workspace/fips-deploy/sokol_app-bin/osx-x64-metal-release/* osx-x64/metal/release
+        mv workspace/fips-deploy/sokol-bin/osx-x64-metal-release/* osx-x64/metal/release
 
     - name: 'Upload Artifacts'
       uses: actions/upload-artifact@v2-preview
@@ -123,7 +123,7 @@ jobs:
       uses: actions/checkout@master
       with:
         submodules: true
-        path: 'workspace/sokol_app-bin'
+        path: 'workspace/sokol-bin'
 
     - name: 'Install missing OpenGL dependencies'
       run: |
@@ -132,22 +132,22 @@ jobs:
 
     - name: 'linux-x64-opengl-debug'
       run: |
-        cd workspace/sokol_app-bin
+        cd workspace/sokol-bin
         python fips build linux-x64-opengl-debug
         
     - name: 'linux-x64-opengl-release'
       run: |
-        cd workspace/sokol_app-bin
+        cd workspace/sokol-bin
         python fips build linux-x64-opengl-release
 
     - name: 'Organize artifacts'
       run: |
 
         mkdir -p linux-x64/opengl/debug
-        mv workspace/fips-deploy/sokol_app-bin/linux-x64-opengl-debug/* linux-x64/opengl/debug
+        mv workspace/fips-deploy/sokol-bin/linux-x64-opengl-debug/* linux-x64/opengl/debug
 
         mkdir -p linux-x64/opengl/release
-        mv workspace/fips-deploy/sokol_app-bin/linux-x64-opengl-release/* linux-x64/opengl/release
+        mv workspace/fips-deploy/sokol-bin/linux-x64-opengl-release/* linux-x64/opengl/release
 
     - name: 'Upload artifacts'
       uses: actions/upload-artifact@v2-preview
@@ -238,4 +238,4 @@ jobs:
 
     - name: 'Trigger Sokol.NET workflow'
       run: |
-        curl -XPOST -u "${{ secrets.SOKOL_NET_USERNAME  }}:${{  secrets.SOKOL_NET_REPO_ACCESS_TOKEN  }}" -H "Accept: application/vnd.github.everest-preview+json"  -H "Content-Type: application/json" https://api.github.com/repos/lithiumtoast/sokol.net/dispatches --data '{"event_type": "sokol_app-bin"}'
+        curl -XPOST -u "${{ secrets.SOKOL_NET_USERNAME  }}:${{  secrets.SOKOL_NET_REPO_ACCESS_TOKEN  }}" -H "Accept: application/vnd.github.everest-preview+json"  -H "Content-Type: application/json" https://api.github.com/repos/lithiumtoast/sokol.net/dispatches --data '{"event_type": "sokol-bin"}'
