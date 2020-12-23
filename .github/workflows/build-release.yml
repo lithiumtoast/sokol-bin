@@ -230,12 +230,12 @@ jobs:
         asset_name: linux-x64.zip
         asset_content_type: application/zip
 
-  dispatch-workflow-job:
-    name: 'Trigger external workflows'
-    needs: [release-job]
-    runs-on: ubuntu-latest
-    steps: 
+  # dispatch-workflow-job:
+  #   name: 'Trigger external workflows'
+  #   needs: [release-job]
+  #   runs-on: ubuntu-latest
+  #   steps: 
 
-    - name: 'Trigger Sokol.NET workflow'
-      run: |
-        curl -XPOST -u "${{ secrets.SOKOL_NET_USERNAME  }}:${{  secrets.SOKOL_NET_REPO_ACCESS_TOKEN  }}" -H "Accept: application/vnd.github.everest-preview+json"  -H "Content-Type: application/json" https://api.github.com/repos/lithiumtoast/sokol.net/dispatches --data '{"event_type": "sokol-bin"}'
+  #   - name: 'Trigger Sokol.NET workflow'
+  #     run: |
+  #       curl -XPOST -u "${{ secrets.SOKOL_NET_USERNAME  }}:${{  secrets.SOKOL_NET_REPO_ACCESS_TOKEN  }}" -H "Accept: application/vnd.github.everest-preview+json"  -H "Content-Type: application/json" https://api.github.com/repos/lithiumtoast/sokol.net/dispatches --data '{"event_type": "sokol-bin"}'
