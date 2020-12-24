@@ -127,8 +127,7 @@ jobs:
 
     - name: 'Install missing OpenGL dependencies'
       run: |
-        sudo apt-get install libglu1-mesa-dev
-        sudo apt-get install libxrandr-dev
+        sudo apt-get install libglu1-mesa-dev libxrandr-dev libxi-dev
 
     - name: 'linux-x64-opengl-debug'
       run: |
